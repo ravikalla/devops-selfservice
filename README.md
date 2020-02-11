@@ -2,7 +2,7 @@
 
 #### Command to create defect in Github project
 ```
-java -cp ./github-api-examples-0.1-SNAPSHOT-jar-with-dependencies.jar in.ravikalla.githubapi.FetchSoftwareRequirementReviewMeeting "<GITHUB PERSONAL ACCESS TOKEN>" "<DEFECT TITLE>" "<DEFECT BODY>" "<DEFECT LABEL>"
+java -cp ./create-github-defect-0.1-SNAPSHOT-jar-with-dependencies.jar in.ravikalla.githubapi.FetchSoftwareRequirementReviewMeeting "<GITHUB PERSONAL ACCESS TOKEN>" "<DEFECT TITLE>" "<DEFECT BODY>" "<DEFECT LABEL>"
 ```
 
 #### How to get Personal Access Token?

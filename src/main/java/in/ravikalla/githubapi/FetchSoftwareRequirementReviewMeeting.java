@@ -1,9 +1,7 @@
 package in.ravikalla.githubapi;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,42 +24,32 @@ public class FetchSoftwareRequirementReviewMeeting {
 
 	public static void main(String[] args) {
 
-		if (args.length >= 4) {
+		if (args.length >= 6) {
 			String strToken = args[0];
-			String strTitle = args[1];
-			String strBody = args[2];
-			String strLabel = args[3];
+			String strUserName = args[1];
+			String strRepoName = args[2];
+			String strTitle = args[3];
+			String strBody = args[4];
+			String strLabel = args[5];
 
 			List<Issue> loadRequirements;
 			try {
 				FetchSoftwareRequirementReviewMeeting defectApi = new FetchSoftwareRequirementReviewMeeting(strToken);
 
-				defectApi.createDefect("ravikalla", "test", strTitle, strBody, strLabel);
+				defectApi.createDefect(strUserName, strUserName, strTitle, strBody, strLabel);
 
-				loadRequirements = defectApi.loadRequirements("ravikalla", "test");
-				System.out.println("86 : Size = " + loadRequirements.size());
+				loadRequirements = defectApi.loadRequirements(strUserName, strRepoName);
+				System.out.println("42 : Size = " + loadRequirements.size());
 				for (Issue issue : loadRequirements) {
-					System.out.println("44 : issue = " + issue);
-					System.out.println("45 : issue = " + issue.getTitle() + " : " + issue.getBody() + " : " + issue.getUrl()
-							+ " : " + issue.getAssignee() + " : " + issue.getCreatedAt());
+					System.out.println("44 : issue = " + issue.getTitle() + " : " + issue.getBody() + " : " + issue.getUrl() + " : " + issue.getAssignee() + " : " + issue.getCreatedAt());
 				}
 			} catch (IOException e) {
-				System.out.println("49 : FetchSoftwareRequirementReviewMeeting.main(...) : " + e);
+				System.out.println("47 : FetchSoftwareRequirementReviewMeeting.main(...) : " + e);
 			}
 		}
 		else {
 			System.out.println("Pass 4 arguments : <Token> <Issue Title> <Issue Body> <Label>");
 		}
-	}
-
-	private List<Issue> loadRequirements(String strUser, String strRepo) throws IOException {
-		Map<String, String> filderdata = new HashMap<String, String>();
-		filderdata.put(IssueService.FILTER_LABELS, "enhancement");
-		filderdata.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
-		List<Issue> issues = iService.getIssues(strUser, strRepo, filderdata);
-		issues.addAll(iService.getIssues(strUser, strRepo, filderdata));
-
-		return issues;
 	}
 
 	private void createDefect(String strUser, String strRepo, String strTitle, String strBody, String strLabel) throws IOException {
@@ -80,9 +68,13 @@ public class FetchSoftwareRequirementReviewMeeting {
 		issueService.createIssue(strUser, strRepo, issue);
 	}
 
-	private static String getCurrentDateTime() {
-	    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-	    Date date = new Date();
-	    return formatter.format(date);
+	private List<Issue> loadRequirements(String strUser, String strRepo) throws IOException {
+		Map<String, String> filderdata = new HashMap<String, String>();
+		filderdata.put(IssueService.FILTER_LABELS, "enhancement");
+		filderdata.put(IssueService.FILTER_STATE, IssueService.STATE_OPEN);
+		List<Issue> issues = iService.getIssues(strUser, strRepo, filderdata);
+		issues.addAll(iService.getIssues(strUser, strRepo, filderdata));
+
+		return issues;
 	}
 }

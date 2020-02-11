@@ -7,7 +7,7 @@ java -cp ./github-api-examples-0.1-SNAPSHOT-jar-with-dependencies.jar in.ravikal
 
 #### How to get Personal Access Token?
  * Login to www.github.com
- * Open "Settings" (Click on your user profile picture on top right hand side corner)
+ * Open "Settings" (Click on your user profile picture on top right hand side corner) - or open this direct [URL!](https://github.com/settings/tokens)
  * Click "Developer settings" -> "Personal access tokens" -> "Generate new token"
  * Check "repo" checkbox and provide Note
  * Click "Generate token" button

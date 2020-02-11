@@ -36,7 +36,7 @@ public class FetchSoftwareRequirementReviewMeeting {
 			try {
 				FetchSoftwareRequirementReviewMeeting defectApi = new FetchSoftwareRequirementReviewMeeting(strToken);
 
-				defectApi.createDefect(strUserName, strUserName, strTitle, strBody, strLabel);
+				defectApi.createDefect(strUserName, strRepoName, strTitle, strBody, strLabel);
 
 				loadRequirements = defectApi.loadRequirements(strUserName, strRepoName);
 				System.out.println("42 : Size = " + loadRequirements.size());

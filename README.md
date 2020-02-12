@@ -31,7 +31,7 @@ curl -X GET "http://localhost:8055/defect/token/<GIT TOKEN>/username/<USER NAME>
  * Click "Generate token" button
  * Newly created "Personal access token" is displayed for first time only. Save it privately.
 
-#### Build docker image
+#### Docker
 Build Docker image
 ```
 docker build -t ravikalla/create-github-defect:1.0 .

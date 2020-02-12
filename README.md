@@ -34,25 +34,25 @@ curl -X GET "http://localhost:8055/defect/token/<GIT TOKEN>/username/<USER NAME>
 #### Build docker image
 Build Docker image
 ```
- docker build -t ravikalla/create-github-defect:1.0 .
+docker build -t ravikalla/create-github-defect:1.0 .
 ```
 Run Docker container
 ```
- docker run -p 8055:8055 --name create-github-defect ravikalla/create-github-defect:1.0 &
+docker run -p 8055:8055 --name create-github-defect ravikalla/create-github-defect:1.0 &
 ```
 Stop Docker container
 ```
- docker stop create-github-defect
+docker stop create-github-defect
 ```
 Remove Docker container
 ```
- docker rm create-github-defect
+docker rm create-github-defect
 ```
 Remove Docker image
 ```
- docker rmi ravikalla/create-github-defect:1.0
+docker rmi ravikalla/create-github-defect:1.0
 ```
 Push Docker image to Dockerhub
 ```
- docker push ravikalla/create-github-defect:1.0
+docker push ravikalla/create-github-defect:1.0
 ```

@@ -18,32 +18,37 @@ import org.springframework.stereotype.Service;
 public class DefectService {
 	Logger L = LoggerFactory.getLogger(DefectService.class);
 
-	public void create(String strToken, String strUserName, String strRepoName, String strTitle, String strLabel, String strBody) {
+	public Issue create(String strToken, String strUserName, String strRepoName, String strTitle, String strLabel, String strBody) throws IOException {
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(strToken);
+
+		Issue issue = null;
 
 		try {
-			createDefect(strUserName, strRepoName, strTitle, strBody, strLabel, client);
+			issue = createDefect(strUserName, strRepoName, strTitle, strBody, strLabel, client);
 		} catch (IOException e) {
 			L.error("26 : DefectService.create(...) : IOException e = {}", e);
+			throw e;
 		}
+		return issue;
 	}
 
-	public List<Issue> get(String strToken, String strUserName, String strRepoName) {
+	public List<Issue> get(String strToken, String strUserName, String strRepoName) throws IOException {
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(strToken);
-		IssueService iService = new IssueService(client);
+		IssueService iService = new IssueService(client); // TODO : Optimize this by creating a Spring bean
 		List<Issue> lstDefects = null;
 
 		try {
 			lstDefects = getDefects(strUserName, strRepoName, iService);
 		} catch (IOException e) {
 			L.error("39 : DefectService.get(...) : IOException e = {}", e);
+			throw e;
 		}
 		return lstDefects;
 	}
 
-	private void createDefect(String strUser, String strRepo, String strTitle, String strBody, String strLabel, GitHubClient client) throws IOException {
+	private Issue createDefect(String strUser, String strRepo, String strTitle, String strBody, String strLabel, GitHubClient client) throws IOException {
 		IssueService issueService = new IssueService(client);
 	
 		Issue issue = new Issue();
@@ -56,7 +61,7 @@ public class DefectService {
 		labels.add(label);
 		issue.setLabels(labels);
 	
-		issueService.createIssue(strUser, strRepo, issue);
+		return issueService.createIssue(strUser, strRepo, issue);
 	}
 	
 	private List<Issue> getDefects(String strUser, String strRepo, IssueService iService) throws IOException {

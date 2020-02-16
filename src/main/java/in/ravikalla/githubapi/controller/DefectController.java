@@ -1,5 +1,6 @@
 package in.ravikalla.githubapi.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.egit.github.core.Issue;
@@ -26,7 +27,7 @@ public class DefectController {
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public void create(
+	public String create(
 			@RequestParam(value="token", required=true) String strToken
 			, @RequestParam(value = "username", required=true) String strUserName
 			, @RequestParam(value = "reponame", required=true) String strRepoName
@@ -35,13 +36,14 @@ public class DefectController {
 			, @RequestParam(value = "body", required=true) String strBody
 			) {
 		L.info("Start : DefectController.create(...) : strUserName = {}, strRepoName = {}, strTitle = {}, strLabel = {}, strBody = {}", strUserName, strRepoName, strTitle, strLabel, strBody);
+		Issue issue = null;
 		try {
-			defectService.create(strToken, strUserName, strRepoName, strTitle, strLabel, strBody);
+			issue = defectService.create(strToken, strUserName, strRepoName, strTitle, strLabel, strBody);
 		} catch (Exception e) {
 			L.error("39 : DefectController.create(...) : Exception e = {}", e);
-			throw e;
 		}
 		L.info("End : DefectController.create(...) : strUserName = {}, strRepoName = {}, strTitle = {}, strLabel = {}, strBody = {}", strUserName, strRepoName, strTitle, strLabel, strBody);
+		return (null == issue)?"NULL":issue.getTitle();
 	}
 
 	@RequestMapping(value = "/token/{token}/username/{username}/reponame/{reponame}", method = RequestMethod.GET)
@@ -49,7 +51,12 @@ public class DefectController {
 			, @PathVariable(value = "username") String strUserName
 			, @PathVariable(value = "reponame") String strRepoName) {
 		L.info("Start : DefectController.get(...) : strUserName = {}, strRepoName = {}", strUserName, strRepoName);
-		List<Issue> lstdefects = defectService.get(strToken, strUserName, strRepoName);
+		List<Issue> lstdefects = null;
+		try {
+			lstdefects = defectService.get(strToken, strUserName, strRepoName);
+		} catch (IOException e) {
+			L.error("58 : DefectController.get(...) : Exception e = {}", e);
+		}
 		L.info("End : DefectController.get(...) : strUserName = {}, strRepoName = {}, lstdefects.size() = {}", strUserName, strRepoName, (null == lstdefects)?0:lstdefects.size());
 		return lstdefects;
 	}

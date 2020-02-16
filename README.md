@@ -38,7 +38,7 @@ docker build -t ravikalla/create-github-defect:1.0 .
 ```
 Run Docker container
 ```
-docker run -p 8055:8055 --name create-github-defect ravikalla/create-github-defect:1.0 &
+docker run --rm -ti -p 8055:8055 --name create-github-defect ravikalla/create-github-defect:1.0 &
 ```
 Stop Docker container
 ```

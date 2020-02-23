@@ -1,4 +1,4 @@
-package in.ravikalla.githubapi.service;
+package in.ravikalla.devopsselfserv.service;
 
 import java.io.IOException;
 import java.util.ArrayList;

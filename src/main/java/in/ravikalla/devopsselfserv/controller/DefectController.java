@@ -1,4 +1,4 @@
-package in.ravikalla.githubapi.controller;
+package in.ravikalla.devopsselfserv.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.ravikalla.githubapi.service.DefectService;
+import in.ravikalla.devopsselfserv.service.DefectService;
 
 @RestController
 @RequestMapping(value = "/defect")

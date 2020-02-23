@@ -1,4 +1,4 @@
-package in.ravikalla.githubapi.controller;
+package in.ravikalla.devopsselfserv.controller;
 
 import org.eclipse.egit.github.core.Repository;
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.ravikalla.githubapi.service.ProjectService;
+import in.ravikalla.devopsselfserv.service.ProjectService;
 
 @RestController
 @RequestMapping(value = "/project")

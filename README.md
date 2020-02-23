@@ -7,7 +7,7 @@ mvn clean install
 
 #### Command to start the application
 ```
-java -jar target/create-github-defect-0.1-SNAPSHOT.jar
+java -jar target/devops-selfservice-0.1-SNAPSHOT.jar
 ```
 
 #### Command to create defect in Github project
@@ -34,25 +34,25 @@ curl -X GET "http://localhost:8055/defect/token/<GIT TOKEN>/username/<USER NAME>
 #### Docker
 Build Docker image
 ```
-docker build -t ravikalla/create-github-defect:1.0 .
+docker build -t ravikalla/devops-selfservice:1.0 .
 ```
 Run Docker container
 ```
-docker run --rm -ti -p 8055:8055 --name create-github-defect ravikalla/create-github-defect:1.0 &
+docker run --rm -ti -p 8055:8055 --name devops-selfservice ravikalla/devops-selfservice:1.0 &
 ```
 Stop Docker container
 ```
-docker stop create-github-defect
+docker stop devops-selfservice
 ```
 Remove Docker container
 ```
-docker rm create-github-defect
+docker rm devops-selfservice
 ```
 Remove Docker image
 ```
-docker rmi ravikalla/create-github-defect:1.0
+docker rmi ravikalla/devops-selfservice:1.0
 ```
 Push Docker image to Dockerhub
 ```
-docker push ravikalla/create-github-defect:1.0
+docker push ravikalla/devops-selfservice:1.0
 ```

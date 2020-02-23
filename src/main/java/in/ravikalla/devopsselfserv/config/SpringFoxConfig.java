@@ -1,4 +1,4 @@
-package in.ravikalla.githubapi.config;
+package in.ravikalla.devopsselfserv.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

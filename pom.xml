@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>in.ravikalla</groupId>
-	<artifactId>create-github-defect</artifactId>
+	<artifactId>devops-selfservice</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>create-github-defect</name>
+	<name>devops-selfservice</name>
 	<description>Project that creates issues in any Github</description>
 
 	<parent>
@@ -84,7 +84,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <mainClass>in.ravikalla.githubapi.StartGithubDefectApplication</mainClass>
+                    <mainClass>in.ravikalla.devopsselfserv.StartGithubDefectApplication</mainClass>
                 </configuration>
                   <executions>
                     <execution>

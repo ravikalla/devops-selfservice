@@ -1,4 +1,4 @@
-package in.ravikalla.githubapi;
+package in.ravikalla.devopsselfserv;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

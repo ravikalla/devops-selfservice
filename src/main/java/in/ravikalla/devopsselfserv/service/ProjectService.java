@@ -32,7 +32,7 @@ public class ProjectService {
 		return repository;
 	}
 
-	public Repository fork(String strOrg, String strToken, String strRepoName, String strNewOrg) throws IOException {
+	public Repository gitFork(String strOrg, String strToken, String strRepoName, String strNewOrg) throws IOException {
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(strToken);
 		RepositoryService repositoryService = new RepositoryService(client); // TODO : Optimize this by creating a Spring bean

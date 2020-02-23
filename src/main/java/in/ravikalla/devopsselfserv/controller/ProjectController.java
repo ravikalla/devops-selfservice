@@ -32,7 +32,7 @@ public class ProjectController {
 		L.info("Start : ProjectController.create(...) : strOrg = {}, strRepoName = {}, newOrgName = {}", strOrg, strRepoName, newOrgName);
 		Repository repository = null;
 		try {
-			repository = projectService.fork(strOrg, strToken, strRepoName, newOrgName);
+			repository = projectService.gitFork(strOrg, strToken, strRepoName, newOrgName);
 		} catch (Exception e) {
 			L.error("39 : ProjectController.create(...) : Exception e = {}", e);
 		}

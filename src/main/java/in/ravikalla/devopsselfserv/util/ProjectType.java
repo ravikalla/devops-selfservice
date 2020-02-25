@@ -1,5 +1,5 @@
 package in.ravikalla.devopsselfserv.util;
 
 public enum ProjectType {
-	JAVA;
+	JAVA, DOTNET, PYTHON;
 }

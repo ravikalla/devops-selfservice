@@ -33,6 +33,7 @@ public class ProjectService {
 	}
 
 	public Repository gitFork(String strOrg, String strToken, String strRepoName, String strNewOrg) throws IOException {
+		L.debug("Start : ProjectService.gitFork(...) : strOrg = {}, strRepoName = {}, strNewOrg = {}", strOrg, strRepoName, strNewOrg);
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(strToken);
 		RepositoryService repositoryService = new RepositoryService(client); // TODO : Optimize this by creating a Spring bean
@@ -41,9 +42,10 @@ public class ProjectService {
 		try {
 			repository = forkProject(strOrg, strRepoName, strNewOrg, repositoryService);
 		} catch (IOException e) {
-			L.error("44 : ProjectService.fork(...) : IOException e = {}", e);
+			L.error("44 : ProjectService.gitFork(...) : IOException e = {}", e);
 			throw e;
 		}
+		L.debug("End : ProjectService.gitFork(...) : strOrg = {}, strRepoName = {}, strNewOrg = {}, (null == repository) = {}", strOrg, strRepoName, strNewOrg, (null == repository));
 		return repository;
 	}
 

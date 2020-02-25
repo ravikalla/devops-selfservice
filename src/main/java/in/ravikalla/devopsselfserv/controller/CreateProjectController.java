@@ -3,12 +3,12 @@ package in.ravikalla.devopsselfserv.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.ravikalla.devopsselfserv.service.MappingService;
 import in.ravikalla.devopsselfserv.service.ProjectService;
 import in.ravikalla.devopsselfserv.util.OrgName;
 import in.ravikalla.devopsselfserv.util.ProjectType;
@@ -24,11 +24,8 @@ public class CreateProjectController {
 		this.projectService = projectService;
 	}
 
-	private MappingService mappingService;
 	@Autowired
-	public void setMappingService(MappingService mappingService) {
-		this.mappingService = mappingService;
-	}
+	private Environment env;
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public void create(
@@ -36,17 +33,15 @@ public class CreateProjectController {
 			, @RequestParam(value="technology", required=true) ProjectType projectType // Java
 			, @RequestParam(value="newOrgName", required=true) OrgName newOrgName // ravikalla
 			) throws Exception {
-		L.info("Start : CreateProjectController.create(...) : projectType = {}, newOrgName = {}", projectType, newOrgName);
+		L.info("Start : CreateProjectController.create(...) : projectType = {}, newOrgName = {}", projectType, newOrgName.toString());
 		try {
-			String strTemplateOrg = mappingService.getTemplateOrgName(projectType);
-			String strTemplateRepoName = mappingService.getTemplateRepoName(projectType);
+			String strTemplateOrg = env.getProperty("git.orgname");
+			String strTemplateRepoName = env.getProperty("git.projectname." + projectType.toString());
 
-			L.info("45 : CreateProjectController.create(...) : strTemplateOrg = {}, strTemplateRepoName = {}", strTemplateOrg, strTemplateRepoName);
-
-			projectService.gitFork(strTemplateOrg, strGitToken, strTemplateRepoName, "lob-" + newOrgName.toString()); // TODO: Generalize it. "lob-" is prepended as GIT repository name is like that - https://github.com/lob-wholesale
+			projectService.gitFork(strTemplateOrg, strGitToken, strTemplateRepoName, newOrgName.toString()); // TODO: Generalize it. "lob-" is prepended as GIT repository name is like that - https://github.com/lob-wholesale
 		} catch (Exception e) {
 			L.error("50 : CreateProjectController.create(...) : Exception e = {}", e);
 		}
-		L.info("End : CreateProjectController.create(...) : projectType = {}, newOrgName = {}", projectType, newOrgName);
+		L.info("End : CreateProjectController.create(...) : projectType = {}, newOrgName = {}", projectType, newOrgName.toString());
 	}
 }

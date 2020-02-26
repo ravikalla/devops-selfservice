@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import in.ravikalla.devopsselfserv.service.ProjectService;
+import in.ravikalla.devopsselfserv.service.SourceCodeService;
 
 @RestController
 @RequestMapping(value = "/project")
 public class ProjectController {
 	Logger L = LoggerFactory.getLogger(ProjectController.class);
 
-	private ProjectService projectService;
+	private SourceCodeService sourceCodeService;
 	@Autowired
-	public void setProjectService(ProjectService projectService) {
-		this.projectService = projectService;
+	public void setProjectService(SourceCodeService sourceCodeService) {
+		this.sourceCodeService = sourceCodeService;
 	}
 
 	@RequestMapping(value = "/fork", method = RequestMethod.POST)
@@ -32,7 +32,7 @@ public class ProjectController {
 		L.info("Start : ProjectController.create(...) : strOrg = {}, strRepoName = {}, newOrgName = {}", strOrg, strRepoName, newOrgName);
 		Repository repository = null;
 		try {
-			repository = projectService.gitFork(strOrg, strToken, strRepoName, newOrgName);
+			repository = sourceCodeService.gitFork(strOrg, strToken, strRepoName, newOrgName);
 		} catch (Exception e) {
 			L.error("39 : ProjectController.create(...) : Exception e = {}", e);
 		}
@@ -51,7 +51,7 @@ public class ProjectController {
 		L.info("Start : ProjectController.create(...) : strOrg = {}, strRepoName = {}, blnIsPrivate = {}, strCloneURL = {}", strOrg, strRepoName, blnIsPrivate, strCloneURL);
 		Repository repository = null;
 		try {
-			repository = projectService.create(strOrg, strToken, strRepoName, blnIsPrivate, strCloneURL);
+			repository = sourceCodeService.create(strOrg, strToken, strRepoName, blnIsPrivate, strCloneURL);
 		} catch (Exception e) {
 			L.error("39 : ProjectController.create(...) : Exception e = {}", e);
 		}

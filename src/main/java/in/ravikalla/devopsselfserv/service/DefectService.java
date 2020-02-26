@@ -1,7 +1,11 @@
 package in.ravikalla.devopsselfserv.service;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +32,26 @@ public class DefectService {
 			issue = createDefect(strUserName, strRepoName, strTitle, strBody, strLabel, client);
 		} catch (IOException e) {
 			L.error("26 : DefectService.create(...) : IOException e = {}", e);
+			throw e;
+		}
+		return issue;
+	}
+
+	public Issue closeTicket(String strToken, String strUserName, String strRepoName, Issue issue, String strLabel) throws IOException {
+		GitHubClient client = new GitHubClient();
+		client.setOAuth2Token(strToken);
+
+		try {
+			Label label = new Label();
+			label.setName(strLabel);
+			List<Label> labels = issue.getLabels();
+			labels.add(label);
+
+			issue.setClosedAt(new Date());
+			issue.setLabels(labels);
+			issue = updateDefect(strUserName, strRepoName, issue, client);
+		} catch (IOException e) {
+			L.error("43 : DefectService.update(...) : IOException e = {}", e);
 			throw e;
 		}
 		return issue;
@@ -63,7 +87,13 @@ public class DefectService {
 	
 		return issueService.createIssue(strUser, strRepo, issue);
 	}
+
+	private Issue updateDefect(String strUser, String strRepo, Issue issue, GitHubClient client) throws IOException {
+		IssueService issueService = new IssueService(client);
 	
+		return issueService.editIssue(strUser, strRepo, issue);
+	}
+
 	private List<Issue> getDefects(String strUser, String strRepo, IssueService iService) throws IOException {
 		Map<String, String> filderdata = new HashMap<String, String>();
 		filderdata.put(IssueService.FILTER_LABELS, "enhancement");

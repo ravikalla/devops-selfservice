@@ -11,11 +11,16 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProjectService {
-	Logger L = LoggerFactory.getLogger(ProjectService.class);
+public class SourceCodeService {
+	Logger L = LoggerFactory.getLogger(SourceCodeService.class);
+
+	@Autowired
+	private Environment env;
 
 	public Repository create(String strOrg, String strToken, String strRepoName, Boolean blnIsPrivate, String strCloneURL) throws IOException {
 		GitHubClient client = new GitHubClient();
@@ -26,26 +31,29 @@ public class ProjectService {
 		try {
 			repository = createProject(strOrg, strRepoName, blnIsPrivate, strCloneURL, repositoryService);
 		} catch (IOException e) {
-			L.error("29 : ProjectService.create(...) : IOException e = {}", e);
+			L.error("29 : SourceCodeService.create(...) : IOException e = {}", e);
 			throw e;
 		}
 		return repository;
 	}
 
-	public Repository gitFork(String strOrg, String strToken, String strRepoName, String strNewOrg) throws IOException {
-		L.debug("Start : ProjectService.gitFork(...) : strOrg = {}, strRepoName = {}, strNewOrg = {}", strOrg, strRepoName, strNewOrg);
+	public Repository gitFork(String strToken, String strTechnology, String strNewOrg, String strProjectName) throws IOException {
+		L.debug("Start : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", strTechnology, strNewOrg, strProjectName);
+		String strTemplateOrg = env.getProperty("git.orgname");
+		String strTemplateRepoName = env.getProperty("git.projectname." + strTechnology);
+
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(strToken);
 		RepositoryService repositoryService = new RepositoryService(client); // TODO : Optimize this by creating a Spring bean
 
 		Repository repository  = null;
 		try {
-			repository = forkProject(strOrg, strRepoName, strNewOrg, repositoryService);
+			repository = forkProject(strTemplateOrg, strTemplateRepoName, strNewOrg, repositoryService);
 		} catch (IOException e) {
-			L.error("44 : ProjectService.gitFork(...) : IOException e = {}", e);
+			L.error("44 : SourceCodeService.gitFork(...) : IOException e = {}", e);
 			throw e;
 		}
-		L.debug("End : ProjectService.gitFork(...) : strOrg = {}, strRepoName = {}, strNewOrg = {}, (null == repository) = {}", strOrg, strRepoName, strNewOrg, (null == repository));
+		L.debug("End : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", strTechnology, strNewOrg, strProjectName);
 		return repository;
 	}
 

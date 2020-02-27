@@ -15,6 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import in.ravikalla.devopsselfserv.util.CustomGlobalContext;
+import in.ravikalla.devopsselfserv.util.OrgName;
+import in.ravikalla.devopsselfserv.util.ProjectType;
+
 @Service
 public class SourceCodeService {
 	Logger L = LoggerFactory.getLogger(SourceCodeService.class);
@@ -37,23 +41,23 @@ public class SourceCodeService {
 		return repository;
 	}
 
-	public Repository gitFork(String strToken, String strTechnology, String strNewOrg, String strProjectName) throws IOException {
-		L.debug("Start : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", strTechnology, strNewOrg, strProjectName);
+	public Repository gitFork(ProjectType projectType, OrgName newOrgName, String strProjectName) throws IOException {
+		L.debug("Start : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", projectType, newOrgName, strProjectName);
 		String strTemplateOrg = env.getProperty("git.orgname");
-		String strTemplateRepoName = env.getProperty("git.projectname." + strTechnology);
+		String strTemplateRepoName = env.getProperty("git.projectname." + projectType.toString());
 
 		GitHubClient client = new GitHubClient();
-		client.setOAuth2Token(strToken);
+		client.setOAuth2Token(CustomGlobalContext.getGitToken());
 		RepositoryService repositoryService = new RepositoryService(client); // TODO : Optimize this by creating a Spring bean
 
 		Repository repository  = null;
 		try {
-			repository = forkProject(strTemplateOrg, strTemplateRepoName, strNewOrg, repositoryService);
+			repository = forkProject(strTemplateOrg, strTemplateRepoName, newOrgName, repositoryService);
 		} catch (IOException e) {
 			L.error("44 : SourceCodeService.gitFork(...) : IOException e = {}", e);
 			throw e;
 		}
-		L.debug("End : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", strTechnology, strNewOrg, strProjectName);
+		L.debug("End : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", projectType, newOrgName, strProjectName);
 		return repository;
 	}
 
@@ -66,9 +70,9 @@ public class SourceCodeService {
 		return createRepository;
 	}
 
-	private Repository forkProject(String strOrg, String strRepoName, String strNewOrg, RepositoryService repositoryService) throws IOException {
+	private Repository forkProject(String strOrg, String strRepoName, OrgName newOrgName, RepositoryService repositoryService) throws IOException {
 		RepositoryId repo = new RepositoryId(strOrg, strRepoName);
-		Repository createRepository = repositoryService.forkRepository(repo, strNewOrg);
+		Repository createRepository = repositoryService.forkRepository(repo, newOrgName.toString());
 		return createRepository;
 	}
 

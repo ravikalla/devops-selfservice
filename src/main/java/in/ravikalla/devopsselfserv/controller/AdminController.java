@@ -14,18 +14,27 @@ import in.ravikalla.devopsselfserv.util.CustomGlobalContext;
 public class AdminController {
 	Logger L = LoggerFactory.getLogger(AdminController.class);
 
-	@RequestMapping(value = "/jenkinsToken", method = RequestMethod.POST)
-	public void setJenkinsToken(
-			@RequestParam(value="jenkinsToken", required=true) String strJenkinsToken
-			) throws Exception {
-		L.info("Start : AdminController.setJenkinsToken(...)");
-		CustomGlobalContext.setJenkinsToken(strJenkinsToken);
-		L.info("End : AdminController.setJenkinsToken(...)");
+	@RequestMapping(value = "/jenkinsCredentials", method = RequestMethod.POST)
+	public void setJenkinsCredentials(@RequestParam(value = "jenkinsURL", required = true) String strJenkinsURL
+			, @RequestParam(value = "jenkinsToken", required = false) String strJenkinsToken
+			, @RequestParam(value = "jenkinsUserName", required = false) String strJenkinsUserName
+			, @RequestParam(value = "jenkinsPwd", required = false) String strJenkinsPwd
+			, @RequestParam(value = "jenkinsCrumb", required = false) String strJenkinsCrumb)
+			throws Exception {
+		L.info("Start : AdminController.setJenkinsCredentials(...)");
+		CustomGlobalContext.setJenkinsUrl(strJenkinsURL);
+
+		if (null != strJenkinsToken)
+			CustomGlobalContext.setJenkinsToken(strJenkinsToken);
+		if (null != strJenkinsUserName)
+			CustomGlobalContext.setJenkinsUserName(strJenkinsUserName);
+		if (null != strJenkinsPwd)
+			CustomGlobalContext.setJenkinsPwd(strJenkinsPwd);
+		L.info("End : AdminController.setJenkinsCredentials(...)");
 	}
+
 	@RequestMapping(value = "/gitToken", method = RequestMethod.POST)
-	public void setGitToken(
-			@RequestParam(value="gitToken", required=true) String strGitToken
-			) throws Exception {
+	public void setGitToken(@RequestParam(value = "gitToken", required = true) String strGitToken) throws Exception {
 		L.info("Start : AdminController.setGitToken(...)");
 		CustomGlobalContext.setJenkinsToken(strGitToken);
 		L.info("End : AdminController.setGitToken(...)");

@@ -1,11 +1,8 @@
 package in.ravikalla.devopsselfserv.service;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,22 +15,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import in.ravikalla.devopsselfserv.util.CustomGlobalContext;
+
 @Service
 public class DefectService {
 	Logger L = LoggerFactory.getLogger(DefectService.class);
 
-	public Issue create(String strToken, String strUserName, String strRepoName, String strTitle, String strLabel, String strBody) throws IOException {
+	public Issue create(String strUserName, String strRepoName, String strTitle, String strLabel, String strBody) throws IOException {
+		L.info("Start : DefectService.create(...) : strUserName = {}, strRepoName = {}, strTitle = {}, strLabel = {}", strUserName, strRepoName, strTitle, strLabel);
 		GitHubClient client = new GitHubClient();
-		client.setOAuth2Token(strToken);
+		client.setOAuth2Token(CustomGlobalContext.getGitToken());
 
 		Issue issue = null;
 
 		try {
 			issue = createDefect(strUserName, strRepoName, strTitle, strBody, strLabel, client);
 		} catch (IOException e) {
-			L.error("26 : DefectService.create(...) : IOException e = {}", e);
+			L.error("34 : DefectService.create(...) : IOException e = {}", e);
 			throw e;
 		}
+		L.info("End : DefectService.create(...) : strUserName = {}, strRepoName = {}, strTitle = {}, strLabel = {}", strUserName, strRepoName, strTitle, strLabel);
 		return issue;
 	}
 
@@ -84,7 +85,7 @@ public class DefectService {
 		label.setName(strLabel);
 		labels.add(label);
 		issue.setLabels(labels);
-	
+
 		return issueService.createIssue(strUser, strRepo, issue);
 	}
 

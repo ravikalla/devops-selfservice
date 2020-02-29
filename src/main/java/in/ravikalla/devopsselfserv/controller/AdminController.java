@@ -36,7 +36,7 @@ public class AdminController {
 	@RequestMapping(value = "/gitToken", method = RequestMethod.POST)
 	public void setGitToken(@RequestParam(value = "gitToken", required = true) String strGitToken) throws Exception {
 		L.info("Start : AdminController.setGitToken(...)");
-		CustomGlobalContext.setJenkinsToken(strGitToken);
+		CustomGlobalContext.setGitToken(strGitToken);
 		L.info("End : AdminController.setGitToken(...)");
 	}
 }

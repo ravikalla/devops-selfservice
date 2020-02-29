@@ -41,23 +41,18 @@ public class SourceCodeService {
 		return repository;
 	}
 
-	public Repository gitFork(ProjectType projectType, OrgName newOrgName, String strProjectName) throws IOException {
-		L.debug("Start : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", projectType, newOrgName, strProjectName);
+	public Repository gitFork(ProjectType projectType, OrgName newOrgName) {
+		L.info("Start : SourceCodeService.gitFork(...) : strNewOrg = {}, strProjectName = {}", projectType, newOrgName);
 		String strTemplateOrg = env.getProperty("git.orgname");
-		String strTemplateRepoName = env.getProperty("git.projectname." + projectType.toString());
+		String strTemplateRepoName = env.getProperty("git.templatename." + projectType.toString());
 
 		GitHubClient client = new GitHubClient();
 		client.setOAuth2Token(CustomGlobalContext.getGitToken());
 		RepositoryService repositoryService = new RepositoryService(client); // TODO : Optimize this by creating a Spring bean
 
 		Repository repository  = null;
-		try {
-			repository = forkProject(strTemplateOrg, strTemplateRepoName, newOrgName, repositoryService);
-		} catch (IOException e) {
-			L.error("44 : SourceCodeService.gitFork(...) : IOException e = {}", e);
-			throw e;
-		}
-		L.debug("End : SourceCodeService.gitFork(...) : strTechnology = {}, strNewOrg = {}, strProjectName = {}", projectType, newOrgName, strProjectName);
+		repository = forkProject(strTemplateOrg, strTemplateRepoName, newOrgName, repositoryService);
+		L.info("End : SourceCodeService.gitFork(...) : strNewOrg = {}, strProjectName = {}", projectType, newOrgName);
 		return repository;
 	}
 
@@ -70,9 +65,16 @@ public class SourceCodeService {
 		return createRepository;
 	}
 
-	private Repository forkProject(String strOrg, String strRepoName, OrgName newOrgName, RepositoryService repositoryService) throws IOException {
+	private Repository forkProject(String strOrg, String strRepoName, OrgName newOrgName, RepositoryService repositoryService) {
+		L.info("Start : SourceCodeService.forkProject(...) : strOrg = {}, strRepoName = {}, newOrgName = {}", strOrg, strRepoName, newOrgName);
+		Repository createRepository = null;
 		RepositoryId repo = new RepositoryId(strOrg, strRepoName);
-		Repository createRepository = repositoryService.forkRepository(repo, newOrgName.toString());
+		try {
+			createRepository = repositoryService.forkRepository(repo, newOrgName.toString());
+		} catch (IOException e) {
+			L.error("SourceCodeService.forkProject(...) : strOrg = {}, strRepoName = {}, newOrgName = {}, IOException e = {}", strOrg, strRepoName, newOrgName, e);
+		}
+		L.info("End : SourceCodeService.forkProject(...) : strOrg = {}, strRepoName = {}, newOrgName = {}", strOrg, strRepoName, newOrgName);
 		return createRepository;
 	}
 

@@ -28,8 +28,7 @@ public class DefectController {
 
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String create(
-			@RequestParam(value="token", required=true) String strToken
-			, @RequestParam(value = "username", required=true) String strUserName
+			@RequestParam(value = "username", required=true) String strUserName
 			, @RequestParam(value = "reponame", required=true) String strRepoName
 			, @RequestParam(value = "title", required=true) String strTitle
 			, @RequestParam(value = "label", required=true) String strLabel
@@ -38,7 +37,7 @@ public class DefectController {
 		L.info("Start : DefectController.create(...) : strUserName = {}, strRepoName = {}, strTitle = {}, strLabel = {}, strBody = {}", strUserName, strRepoName, strTitle, strLabel, strBody);
 		Issue issue = null;
 		try {
-			issue = defectService.create(strToken, strUserName, strRepoName, strTitle, strLabel, strBody);
+			issue = defectService.create(strUserName, strRepoName, strTitle, strLabel, strBody);
 		} catch (Exception e) {
 			L.error("39 : DefectController.create(...) : Exception e = {}", e);
 		}

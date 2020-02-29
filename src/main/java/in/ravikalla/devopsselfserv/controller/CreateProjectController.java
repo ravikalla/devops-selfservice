@@ -56,7 +56,10 @@ public class CreateProjectController {
 		L.info("Start : CreateProjectController.create(...) : projectType = {}, newOrgName = {}", projectType, newOrgName.toString());
 		try {
 //			Open a Ticket
-			Issue issue = defectService.create(TICKET_ORG_NAME, TICKET_REPO_NAME, TICKET_JOB_CREATE_TITLE, TICKET_JOB_CREATE_STARTED_LABEL, Util.createDefectBody(TICKET_JOB_CREATE_BODY, projectType, newOrgName));
+			Issue issue = defectService.create(TICKET_ORG_NAME, TICKET_REPO_NAME,
+					Util.createDefectInfo(TICKET_JOB_CREATE_TITLE, projectType, newOrgName),
+					TICKET_JOB_CREATE_STARTED_LABEL,
+					Util.createDefectInfo(TICKET_JOB_CREATE_BODY, projectType, newOrgName));
 
 //			Create Git repository
 			sourceCodeService.gitFork(projectType, newOrgName);
